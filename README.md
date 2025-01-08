@@ -68,6 +68,8 @@ This project is a web scraping application that fetches cost of living data for 
 - **Method**: `GET`
 - **Query Params**:
   - `monthYear` (optional): Fetches data for a specific month-year (e.g., `1.25` for January 2025).
+  - `city` (optional): Fetches data for a specific city (e.g., `Ljubljana` for Ljubljana).
+  - Both filters can be combined.
 - **Response**:
   - Success: Returns data for the requested month-year or the latest data.
   - Failure: Returns `404` if no data exists.
