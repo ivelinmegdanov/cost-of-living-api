@@ -93,6 +93,8 @@ MONGO_URI=mongodb://mongo:27017/cost-of-living
 SCRAPE_DAY=8 // By default every first of the month
 ```
 
+Or copy and rename `.env.example` file in the root directory and modify the variables.
+
 ---
 
 ## Project Structure
