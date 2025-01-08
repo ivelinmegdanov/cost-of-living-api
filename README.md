@@ -41,8 +41,8 @@ This project is a web scraping application that fetches cost of living data for 
 1. Clone the repository:
 
    ```bash
-   git clone https://github.com/your-username/cost-of-living-scraper.git
-   cd cost-of-living-scraper
+   git clone https://github.com/ivelinmegdanov/bulgaria-vs-world-api.git
+   cd bulgaria-vs-world-api
    ```
 
 2. Install dependencies:
