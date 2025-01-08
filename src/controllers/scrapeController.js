@@ -2,26 +2,56 @@ const CostOfLiving = require("../models/costOfLiving");
 const scrapeCostOfLiving = require("../services/scraper");
 
 exports.getCostOfLiving = async (req, res) => {
-  const { monthYear } = req.query;
+  const { monthYear, city } = req.query;
+
   try {
-    if (monthYear) {
-      // Fetch data for the specified month
-      const data = await CostOfLiving.findOne({ monthYear });
-      if (!data) {
-        return res
-          .status(404)
-          .json({ error: `Data for ${monthYear} not found.` });
-      }
-      return res.status(200).json(data);
-    } else {
-      // Return all entries if no filter is provided
-      const allData = await CostOfLiving.find().sort({ createdAt: -1 }); // Sort by creation date descending
-      if (!allData.length) {
-        return res.status(404).json({ error: "No data available." });
-      }
-      return res.status(200).json(allData); // Return all entries
+    const query = {};
+
+    // Add filters for parent document
+    if (monthYear) query.monthYear = monthYear;
+    if (city) {
+      query.comparisons = {
+        $elemMatch: { comparedCity: { $regex: new RegExp(city, "i") } },
+      };
     }
+
+    // Fetch data based on the query
+    const data = await CostOfLiving.find(query).sort({ createdAt: -1 });
+
+    if (!data.length) {
+      return res
+        .status(404)
+        .json({ error: `No data found for the specified filters.` });
+    }
+
+    // Filter comparisons to include only the matching city
+    const filteredData = data.map((doc) => {
+      const filteredComparisons = city
+        ? doc.comparisons.filter((comp) =>
+            comp.comparedCity.match(new RegExp(city, "i"))
+          )
+        : doc.comparisons;
+
+      return {
+        ...doc.toObject(),
+        comparisons: filteredComparisons,
+      };
+    });
+
+    // Return only entries with comparisons after filtering
+    const nonEmptyResults = filteredData.filter(
+      (doc) => doc.comparisons && doc.comparisons.length > 0
+    );
+
+    if (!nonEmptyResults.length) {
+      return res
+        .status(404)
+        .json({ error: `No comparisons found for the specified filters.` });
+    }
+
+    return res.status(200).json(nonEmptyResults);
   } catch (err) {
+    console.error("Error fetching cost of living data:", err);
     res
       .status(500)
       .json({ error: "Failed to fetch data", details: err.message });
