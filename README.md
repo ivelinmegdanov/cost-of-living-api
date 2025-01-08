@@ -90,7 +90,7 @@ Create a `.env` file in the root directory with the following variables:
 ```env
 PORT=5000
 MONGO_URI=mongodb://mongo:27017/cost-of-living
-NODE_ENV=development
+SCRAPE_DAY=8 // By default every first of the month
 ```
 
 ---
