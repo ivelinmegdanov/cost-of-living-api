@@ -6,7 +6,7 @@ This project is a web scraping application that fetches cost of living data for 
 
 - **Scrape Data**: Scrapes cost-of-living comparison data from [Numbeo](https://www.numbeo.com/).
 - **Database Storage**: Saves scraped data in MongoDB, organized by month and year (e.g., `1.25` for January 2025).
-- **Scheduled Scraping**: Automatically scrapes data every 10th of the month.
+- **Scheduled Scraping**: Automatically scrapes data every month (configurable).
 - **Force Scraping**: Allows manual scraping via API with data overwriting for the current month.
 - **Filterable API**: Provides an API to fetch all data or filter by specific months.
 - **Dockerized**: Easily deployable using Docker for consistent and reliable environment setups.
